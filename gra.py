@@ -1,5 +1,5 @@
 import pygame, random
-from menu import MainMenu
+from menu import MainMenu,OptionsMenu
 from grakulka import Game
 
 class Gra():
@@ -11,13 +11,16 @@ class Gra():
         self.DIS_W, self.DIS_H = 1280, 720
         self.display = pygame.Surface((self.DIS_W,self.DIS_H))
         self.window = pygame.display.set_mode((self.DIS_W,self.DIS_H),pygame.FULLSCREEN)
-        self.font = '8-BIT WONDER.TTF'
+        self.font = 'Font1.ttf'
         self.BLACK, self.WHITE, self.PURPLE = (0,0,0) , (255,255,255) , (119,65,235)
-        self.curr_menu = MainMenu(self)
-        self.GraKulka = Game(self)
+        self.mainmenu = MainMenu(self)
+        self.optionsmenu = OptionsMenu(self)
+        self.curr_menu = self.mainmenu
         
     def game_loop(self):
         if self.kulka_playing:
+            self.GraKulka = Game(self)
+            self.GraKulka.running = True
             self.GraKulka.run()
 
     def check_events(self):
@@ -44,14 +47,8 @@ class Gra():
         
     def draw_text(self, text, size, x, y, color):
         font_1 = pygame.font.Font(self.font, size)
-        text_surface_1 = font_1.render(text, True, self.BLACK)
+        text_surface_1 = font_1.render(text, True, color)
         text_rect_1 = text_surface_1.get_rect()
-        text_rect_1.topleft = (x+5,y+5)
-        font_2 = pygame.font.Font(self.font, size)
-        text_surface_2 = font_2.render(text, True, color)
-        text_rect_2 = text_surface_2.get_rect()
-        text_rect_2.topleft = (x,y)
+        text_rect_1.topleft = (x,y)
         self.display.blit(text_surface_1,text_rect_1)
         self.window.blit(text_surface_1,text_rect_1)
-        self.display.blit(text_surface_2,text_rect_2)
-        self.window.blit(text_surface_2,text_rect_2)  
